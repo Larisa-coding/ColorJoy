@@ -174,19 +174,29 @@ export const heart = (cx: number, cy: number, size: number): Pt[] => {
 };
 
 export const cloud = (cx: number, cy: number, scale = 1): Pt[] => {
-  const raw: Pt[] = [
-    [-52, 8],
-    [-36, -16],
-    [-14, -6],
-    [0, -24],
-    [18, -8],
-    [40, -16],
-    [58, 6],
-    [36, 22],
-    [4, 24],
-    [-28, 20],
+  const points: Pt[] = [];
+  const bumps = [
+    [-34, 6, 18],
+    [-14, -8, 22],
+    [10, -12, 20],
+    [30, -2, 16],
+    [16, 12, 16],
+    [-12, 14, 16],
   ];
-  return raw.map(([x, y]) => [cx + x * scale, cy + y * scale]);
+  for (let i = 0; i < 48; i += 1) {
+    const t = (i / 48) * Math.PI * 2;
+    const x = Math.cos(t);
+    const y = Math.sin(t);
+    let radius = 8;
+    for (const [bx, by, br] of bumps) {
+      const dx = x * 36 - bx;
+      const dy = y * 18 - by;
+      const dist = Math.hypot(dx, dy);
+      radius = Math.max(radius, br - dist * 0.35);
+    }
+    points.push([cx + x * radius * scale * 1.7, cy + y * radius * scale]);
+  }
+  return points;
 };
 
 export const egg = (cx: number, cy: number, rx: number, ry: number): Pt[] => {

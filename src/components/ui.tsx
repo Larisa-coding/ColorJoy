@@ -1,7 +1,13 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { openPath } from '@/catalog/geometry';
 import { loadPage, peekPage } from '@/catalog/loadPage';
-import type { ColoringPage } from '@/catalog/types';
+import type { ColoringPage, Region } from '@/catalog/types';
+
+const boxesOverlap = (a: Region, b: Region) =>
+  !(a.bbox.maxX < b.bbox.minX || a.bbox.minX > b.bbox.maxX || a.bbox.maxY < b.bbox.minY || a.bbox.minY > b.bbox.maxY);
+
+const clipPath = (region: Region, regions: Region[]) =>
+  [region.d, ...regions.filter((other) => other.id !== region.id && other.area < region.area && boxesOverlap(region, other)).map((other) => other.d)].join(' ');
 
 export const PageSvg = ({ page, debug = false }: { page: ColoringPage; debug?: boolean }) => (
   <svg viewBox="0 0 400 400" className="lines layer" aria-hidden="true">
@@ -11,16 +17,21 @@ export const PageSvg = ({ page, debug = false }: { page: ColoringPage; debug?: b
         ))
       : null}
     {page.strokeWidth > 0
-      ? page.regions.map((region) => (
-          <path
-            key={region.id}
-            d={region.d}
-            fill="none"
-            stroke="#1b1724"
-            strokeWidth={region.id === 'sky' ? 0 : page.strokeWidth}
-            strokeLinejoin="round"
-            strokeLinecap="round"
-          />
+      ? page.regions.map((region) => region.id === 'sky' ? null : (
+          <g key={region.id}>
+            <clipPath id={`${page.id}-${region.id}`} clipPathUnits="userSpaceOnUse">
+              <path d={clipPath(region, page.regions)} clipRule="evenodd" />
+            </clipPath>
+            <path
+              d={region.d}
+              fill="none"
+              stroke="#1b1724"
+              strokeWidth={page.strokeWidth * 2}
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              clipPath={`url(#${page.id}-${region.id})`}
+            />
+          </g>
         ))
       : null}
     {page.decors.map((decor, index) => (

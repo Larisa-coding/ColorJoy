@@ -52,37 +52,6 @@ const earPoints = (ear: Ear, side: -1 | 1, hx: number, hy: number, hr: number): 
   return [];
 };
 
-const tailLine = (tail: Tail, bx: number, by: number, brx: number): Pt[] => {
-  if (tail === 'curl') {
-    const pts: Pt[] = [];
-    for (let i = 0; i <= 14; i += 1) {
-      const t = i / 14;
-      const ang = Math.PI * 0.2 + t * Math.PI * 1.35;
-      pts.push([bx - brx * 0.15 - t * 24 + Math.cos(ang) * (26 + t * 10), by - 30 + Math.sin(ang) * 24]);
-    }
-    return pts;
-  }
-  if (tail === 'straight') {
-    return [
-      [bx - brx + 8, by],
-      [bx - brx - 36, by - 28],
-      [bx - brx - 70, by - 8],
-    ];
-  }
-  if (tail === 'big') {
-    const pts: Pt[] = [];
-    for (let i = 0; i <= 12; i += 1) {
-      const t = i / 12;
-      pts.push([bx - brx + 6 - t * 78, by - 10 - Math.sin(t * Math.PI) * 56]);
-    }
-    return pts;
-  }
-  return [
-    [bx - brx + 10, by + 8],
-    [bx - brx - 28, by + 4],
-  ];
-};
-
 export const addAnimal = (sketch: Sketch, opts: AnimalOpts): void => {
   const pose = opts.pose ?? 'front';
   const ear = opts.ear ?? 'pointy';
@@ -104,30 +73,29 @@ export const addAnimal = (sketch: Sketch, opts: AnimalOpts): void => {
   };
 
   const neck = opts.extras?.includes('neck') ?? false;
-  const hx = pose === 'side' ? 148 : pose === 'sleep' ? 128 : pose === 'run' ? 176 : 200;
-  let hy = pose === 'sleep' ? 214 : neck ? 78 : pose === 'side' ? 150 : pose === 'run' ? 132 : 128;
-  let hr = (pose === 'front' ? 54 : 44) * (opts.head ?? 1);
-  const bx = pose === 'side' ? 236 : pose === 'run' ? 214 : 200;
-  const by = pose === 'sleep' ? 250 : pose === 'front' ? 262 : 248;
-  const brx = (pose === 'front' ? 72 : 84) * (opts.bodyRx ?? 1);
-  const bry = (pose === 'sleep' ? 36 : pose === 'front' ? 58 : 46) * (opts.bodyRy ?? 1);
-  if (pose === 'run') {
-    hy = 136;
-    hr = 42 * (opts.head ?? 1);
-  }
+  const hx = pose === 'side' ? 156 : pose === 'sleep' ? 132 : pose === 'run' ? 172 : 200;
+  const hy = pose === 'sleep' ? 198 : neck ? 118 : pose === 'side' ? 158 : pose === 'run' ? 154 : 156;
+  let hr = (pose === 'front' ? 58 : 46) * (opts.head ?? 1);
+  const bx = pose === 'side' ? 222 : pose === 'run' ? 214 : pose === 'sleep' ? 214 : 200;
+  const by = pose === 'sleep' ? 228 : pose === 'front' ? 248 : 236;
+  const brx = (pose === 'front' ? 76 : pose === 'sleep' ? 102 : 82) * (opts.bodyRx ?? 1);
+  const bry = (pose === 'sleep' ? 38 : pose === 'front' ? 66 : 50) * (opts.bodyRy ?? 1);
+  if (pose === 'run') hr = 44 * (opts.head ?? 1);
 
   if (opts.extras?.includes('shell')) put('shell', 'Панцирь', ellipse(bx, by + 6, brx + 18, bry + 8));
   if (opts.extras?.includes('wings')) {
     put('wing-l', 'Левое крыло', rotate(ellipse(bx - brx * 0.2, by - 10, 70, 34), bx, by, -30));
     put('wing-r', 'Правое крыло', rotate(ellipse(bx + brx * 0.2, by - 10, 70, 34), bx, by, 30));
   }
-  if (tail !== 'none' && tail !== 'puff') put('tail', 'Хвост', ribbon(tailLine(tail, bx, by, brx), tail === 'big' ? 26 : tail === 'short' ? 12 : 16));
-  if (tail === 'puff') put('tail', 'Хвостик', circle(bx - brx * 0.15, by + bry * 0.15, 16));
+  if (tail === 'puff') put('tail', 'Хвостик', circle(bx - brx * 0.72, by + bry * 0.05, 16));
+  else if (tail !== 'none') {
+    put('tail', 'Хвост', ellipse(bx - brx * 0.62, by + bry * 0.42, tail === 'big' ? 34 : tail === 'short' ? 16 : 26, tail === 'short' ? 11 : 14));
+  }
 
   let body = ellipse(bx, by, brx, bry);
   if (pose === 'run') body = rotate(body, bx, by, -16);
   put('body', 'Тело', body);
-  if (opts.belly !== false && pose === 'front') put('belly', 'Живот', ellipse(bx, by + 12, brx * 0.48, bry * 0.62));
+  if (opts.belly !== false && pose === 'front') put('belly', 'Живот', ellipse(bx, by + bry * 0.16, brx * 0.38, bry * 0.36));
   if (neck) put('neck', 'Шея', ellipse(200, 150, 22, 62));
 
   if (opts.extras?.includes('fluff')) {
@@ -187,9 +155,11 @@ export const addAnimal = (sketch: Sketch, opts: AnimalOpts): void => {
     put('ossi-r', 'Рожок', ellipse(hx + 16, hy - hr - 8, 5, 14));
   }
   if (opts.extras?.includes('bow')) {
-    put('bow-l', 'Бант', rotate(ellipse(hx + hr * 0.7, hy - hr * 0.2, 16, 10), hx + hr * 0.7, hy - hr * 0.2, -30));
-    put('bow-r', 'Бант', rotate(ellipse(hx + hr * 0.95, hy + 4, 16, 10), hx + hr * 0.95, hy + 4, 24));
-    put('bow-k', 'Узел', circle(hx + hr * 0.82, hy - 2, 7));
+    const bowX = hx + hr * 0.28;
+    const bowY = hy - hr * 0.92;
+    put('bow-l', 'Бант', rotate(ellipse(bowX - 12, bowY, 14, 8), bowX, bowY, -20));
+    put('bow-r', 'Бант', rotate(ellipse(bowX + 12, bowY, 14, 8), bowX, bowY, 20));
+    put('bow-k', 'Узел', circle(bowX, bowY, 6));
   }
 
   const eyeY = hy + hr * 0.08;
@@ -242,8 +212,8 @@ export const addAnimal = (sketch: Sketch, opts: AnimalOpts): void => {
 
   if (opts.paws !== false && pose !== 'sleep') {
     if (pose === 'front') {
-      put('paw-l', 'Левая лапа', ellipse(bx - brx * 0.42, by + bry * 0.78, brx * 0.28, bry * 0.28));
-      put('paw-r', 'Правая лапа', ellipse(bx + brx * 0.42, by + bry * 0.78, brx * 0.28, bry * 0.28));
+      put('paw-l', 'Левая лапа', ellipse(bx - brx * 0.4, by + bry * 0.78, 20, 16));
+      put('paw-r', 'Правая лапа', ellipse(bx + brx * 0.4, by + bry * 0.78, 20, 16));
     } else {
       put('paw-a', 'Лапа', ellipse(bx - 20, by + bry * 0.85, 16, 12));
       put('paw-b', 'Лапа', ellipse(bx + 34, by + bry * 0.9, 16, 12));

@@ -78,27 +78,27 @@ export const person = (
     s.add('shoe-l', 'Ботинок', ellipse(186, 308, 18, 10));
     s.add('shoe-r', 'Ботинок', ellipse(214, 308, 18, 10));
   }
-  s.add('head', 'Лицо', circle(200, 118, 36));
-  s.add('hair', 'Волосы', ellipse(200, 90, 40, 24));
-  if (o.hair === 'bun') s.add('bun', 'Пучок', circle(200, 68, 14));
-  face(s, 200, 118, 36);
+  s.add('head', 'Лицо', circle(200, 136, 40));
+  s.add('hair', 'Волосы', ellipse(200, 108, 44, 26));
+  if (o.hair === 'bun') s.add('bun', 'Пучок', circle(200, 84, 14));
+  face(s, 200, 136, 40);
   if (o.hat === 'crown') {
-    s.add('crown', 'Корона', [[168, 86], [180, 58], [200, 80], [220, 52], [232, 86]]);
+    s.add('crown', 'Корона', [[166, 104], [178, 74], [200, 96], [222, 68], [234, 104]]);
   } else if (o.hat === 'chef') {
-    s.add('hat', 'Колпак', ellipse(200, 62, 34, 26));
-    s.add('hat-band', 'Ободок', rect(172, 80, 56, 12));
+    s.add('hat', 'Колпак', ellipse(200, 78, 34, 26));
+    s.add('hat-band', 'Ободок', rect(172, 96, 56, 12));
   } else if (o.hat === 'fire' || o.hat === 'hardhat' || o.hat === 'police' || o.hat === 'cap') {
-    s.add('hat', 'Шляпа', ellipse(200, 78, 40, 16));
-    s.add('hat-top', 'Верх шляпы', roundRect(176, 52, 48, 24, 8));
+    s.add('hat', 'Шляпа', ellipse(200, 96, 42, 16));
+    s.add('hat-top', 'Верх шляпы', roundRect(176, 70, 48, 24, 8));
   } else if (o.hat === 'astro') {
-    s.add('helmet', 'Шлем', circle(200, 118, 48));
-    s.add('visor', 'Стекло', ellipse(200, 122, 28, 18));
+    s.add('helmet', 'Шлем', circle(200, 136, 50));
+    s.add('visor', 'Стекло', ellipse(200, 140, 28, 18));
     s.add('backpack', 'Рюкзак', roundRect(108, 168, 36, 70, 10));
   } else if (o.hat === 'flower') {
-    bloom(s, 'hatflower', 230, 70, 16);
+    bloom(s, 'hatflower', 232, 88, 16);
   } else if (o.hat === 'wizard') {
-    s.add('hat', 'Колпак', [[160, 92], [200, 20], [240, 92]]);
-    s.add('hat-band', 'Лента', rect(168, 86, 64, 12));
+    s.add('hat', 'Колпак', [[160, 108], [200, 36], [240, 108]]);
+    s.add('hat-band', 'Лента', rect(168, 102, 64, 12));
   }
   if (o.prop === 'book') s.add('book', 'Книга', roundRect(250, 210, 46, 34, 6));
   if (o.prop === 'hammer') {
@@ -125,13 +125,13 @@ export const sceneMakers: Record<string, (meta: PageMeta) => PageGeometry> = {
     s.dress('sea');
     s.add('body', 'Тело', ellipse(190, 230, 110, 58));
     s.add('belly', 'Живот', ellipse(190, 248, 72, 28));
-    s.add('tail', 'Хвост', [[78, 220], [30, 180], [48, 230], [30, 270], [82, 246]]);
+    s.add('tail', 'Хвост', [[120, 200], [36, 168], [28, 230], [36, 286], [120, 258]]);
     s.add('fin', 'Плавник', [[210, 176], [250, 130], [246, 190]]);
     s.add('flip', 'Ласт', ellipse(150, 270, 28, 14));
     s.add('eye', 'Глаз', circle(262, 214, 10));
     s.add('pupil', 'Зрачок', circle(265, 214, 5));
     s.decor(smile(250, 236, 16).points, 4);
-    s.add('spout', 'Фонтанчик', ellipse(168, 150, 10, 22));
+    s.add('spout', 'Фонтанчик', ellipse(175, 176, 12, 16));
     return s.done(meta);
   },
   'dolphin-jump': (meta) => {

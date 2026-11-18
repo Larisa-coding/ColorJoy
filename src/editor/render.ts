@@ -217,15 +217,29 @@ export const strokeOutlines = (ctx: CanvasRenderingContext2D, page: ColoringPage
   ctx.strokeStyle = '#1b1724';
   ctx.lineWidth = page.strokeWidth * scale;
   ctx.miterLimit = 2;
-  for (const region of page.regions) {
-    if (region.id === 'sky') continue;
-    ctx.beginPath();
-    region.points.forEach(([x, y], index) => {
+  const trace = (points: Pt[]) => {
+    points.forEach(([x, y], index) => {
       if (index === 0) ctx.moveTo(x * scale, y * scale);
       else ctx.lineTo(x * scale, y * scale);
     });
     ctx.closePath();
+  };
+  for (const region of page.regions) {
+    if (region.id === 'sky') continue;
+    const covers = page.regions.filter((other) => other.id !== region.id && other.area < region.area && !(region.bbox.maxX < other.bbox.minX || region.bbox.minX > other.bbox.maxX || region.bbox.maxY < other.bbox.minY || region.bbox.minY > other.bbox.maxY));
+    ctx.save();
+    ctx.beginPath();
+    trace(region.points);
+    ctx.clip();
+    ctx.beginPath();
+    trace(region.points);
+    for (const cover of covers) trace(cover.points);
+    ctx.clip('evenodd');
+    ctx.beginPath();
+    trace(region.points);
+    ctx.lineWidth = page.strokeWidth * scale * 2;
     ctx.stroke();
+    ctx.restore();
   }
   for (const decor of page.decors) {
     if (decor.points.length < 2) continue;
