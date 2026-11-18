@@ -104,16 +104,16 @@ export const addAnimal = (sketch: Sketch, opts: AnimalOpts): void => {
   };
 
   const neck = opts.extras?.includes('neck') ?? false;
-  const hx = pose === 'side' ? 132 : pose === 'sleep' ? 118 : pose === 'run' ? 168 : 200;
-  let hy = pose === 'sleep' ? 214 : neck ? 86 : pose === 'side' ? 168 : pose === 'run' ? 150 : 150;
-  let hr = (pose === 'side' || pose === 'sleep' ? 46 : 60) * (opts.head ?? 1);
-  const bx = pose === 'side' ? 230 : pose === 'run' ? 214 : 200;
-  const by = pose === 'sleep' ? 246 : 252;
-  const brx = (pose === 'side' || pose === 'sleep' || pose === 'run' ? 92 : 74) * (opts.bodyRx ?? 1);
-  const bry = (pose === 'sleep' ? 42 : pose === 'side' || pose === 'run' ? 48 : 64) * (opts.bodyRy ?? 1);
+  const hx = pose === 'side' ? 148 : pose === 'sleep' ? 128 : pose === 'run' ? 176 : 200;
+  let hy = pose === 'sleep' ? 214 : neck ? 78 : pose === 'side' ? 150 : pose === 'run' ? 132 : 128;
+  let hr = (pose === 'front' ? 54 : 44) * (opts.head ?? 1);
+  const bx = pose === 'side' ? 236 : pose === 'run' ? 214 : 200;
+  const by = pose === 'sleep' ? 250 : pose === 'front' ? 262 : 248;
+  const brx = (pose === 'front' ? 72 : 84) * (opts.bodyRx ?? 1);
+  const bry = (pose === 'sleep' ? 36 : pose === 'front' ? 58 : 46) * (opts.bodyRy ?? 1);
   if (pose === 'run') {
-    hy = 156;
-    hr = 48 * (opts.head ?? 1);
+    hy = 136;
+    hr = 42 * (opts.head ?? 1);
   }
 
   if (opts.extras?.includes('shell')) put('shell', 'Панцирь', ellipse(bx, by + 6, brx + 18, bry + 8));

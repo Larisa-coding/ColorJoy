@@ -17,7 +17,7 @@ export const PageSvg = ({ page, debug = false }: { page: ColoringPage; debug?: b
             d={region.d}
             fill="none"
             stroke="#1b1724"
-            strokeWidth={page.strokeWidth}
+            strokeWidth={region.id === 'sky' ? 0 : page.strokeWidth}
             strokeLinejoin="round"
             strokeLinecap="round"
           />
@@ -29,7 +29,7 @@ export const PageSvg = ({ page, debug = false }: { page: ColoringPage; debug?: b
         d={openPath(decor.points)}
         fill="none"
         stroke="#1b1724"
-        strokeWidth={decor.width ?? Math.max(3, page.strokeWidth * 0.45)}
+        strokeWidth={Math.min(decor.width ?? page.strokeWidth * 0.65, page.strokeWidth)}
         strokeLinecap="round"
         strokeLinejoin="round"
       />

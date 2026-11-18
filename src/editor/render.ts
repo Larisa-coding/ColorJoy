@@ -218,6 +218,7 @@ export const strokeOutlines = (ctx: CanvasRenderingContext2D, page: ColoringPage
   ctx.lineWidth = page.strokeWidth * scale;
   ctx.miterLimit = 2;
   for (const region of page.regions) {
+    if (region.id === 'sky') continue;
     ctx.beginPath();
     region.points.forEach(([x, y], index) => {
       if (index === 0) ctx.moveTo(x * scale, y * scale);
@@ -229,7 +230,7 @@ export const strokeOutlines = (ctx: CanvasRenderingContext2D, page: ColoringPage
   for (const decor of page.decors) {
     if (decor.points.length < 2) continue;
     ctx.beginPath();
-    ctx.lineWidth = (decor.width ?? page.strokeWidth * 0.45) * scale;
+    ctx.lineWidth = Math.min(decor.width ?? page.strokeWidth * 0.65, page.strokeWidth) * scale;
     decor.points.forEach(([x, y], index) => {
       if (index === 0) ctx.moveTo(x * scale, y * scale);
       else ctx.lineTo(x * scale, y * scale);

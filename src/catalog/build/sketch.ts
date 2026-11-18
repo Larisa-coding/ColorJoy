@@ -24,12 +24,12 @@ export class Sketch {
       this.add('star-a', 'Звезда', star(62, 64, 18, 8));
       this.add('star-b', 'Звёздочка', star(118, 108, 12, 5));
       this.add('star-c', 'Искра', star(250, 48, 10, 4));
-      if (kind === 'night') this.add('ground', 'Земля', ellipse(200, 392, 210, 42));
+      if (kind === 'night') this.add('ground', 'Земля', ellipse(200, 398, 200, 20));
       return this;
     }
     if (kind === 'sea') {
       this.add('water', 'Вода', rect(0, 168, 400, 232));
-      this.add('sand', 'Песок', ellipse(200, 378, 210, 36));
+      this.add('sand', 'Песок', ellipse(200, 390, 200, 18));
       this.add('bubble-a', 'Пузырь', circle(78, 230, 12));
       this.add('bubble-b', 'Пузырь', circle(318, 210, 9));
       return this;
@@ -41,14 +41,14 @@ export class Sketch {
       return this;
     }
     if (kind === 'snow') {
-      this.add('ground', 'Снег', ellipse(200, 390, 220, 46));
+      this.add('ground', 'Снег', ellipse(200, 398, 210, 20));
       this.add('flake-a', 'Снежинка', star(70, 70, 14, 6));
       this.add('flake-b', 'Снежинка', star(330, 110, 11, 5));
       return this;
     }
-    this.add('ground', 'Земля', ellipse(200, 392, 220, 48));
-    this.add('sun', 'Солнце', circle(338, 62, 30));
-    this.add('cloud', 'Облако', cloud(86, 74, 0.95));
+    this.add('ground', 'Земля', ellipse(200, 398, 210, 22));
+    this.add('sun', 'Солнце', circle(348, 46, 22));
+    this.add('cloud', 'Облако', cloud(62, 48, 0.62));
     return this;
   }
 

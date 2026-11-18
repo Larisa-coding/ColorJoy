@@ -54,8 +54,8 @@ export type ColoringPage = PageMeta &
 export const ART = 400;
 
 export const strokeFor = (difficulty: Difficulty): number => {
-  if (difficulty === 'very-easy') return 11;
-  if (difficulty === 'easy') return 8.5;
-  if (difficulty === 'medium') return 6.5;
-  return 5;
+  if (difficulty === 'very-easy') return 3.6;
+  if (difficulty === 'easy') return 3;
+  if (difficulty === 'medium') return 2.4;
+  return 2;
 };

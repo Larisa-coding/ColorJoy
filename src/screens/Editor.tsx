@@ -77,6 +77,8 @@ export const Editor = ({ pageId, drawingId }: { pageId: string; drawingId?: stri
   const [leave, setLeave] = useState(false);
   const [done, setDone] = useState(false);
   const [more, setMore] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const sheetDrag = useRef(0);
   const [picker, setPicker] = useState(false);
   const frameRef = useRef<HTMLDivElement>(null);
   const worldRef = useRef<HTMLDivElement>(null);
@@ -328,7 +330,22 @@ export const Editor = ({ pageId, drawingId }: { pageId: string; drawingId?: stri
           <button type="button" aria-label="По размеру экрана" onClick={() => viewRef.current?.fit()}>1:1</button>
         </div>
       </section>
-      <footer className="dock">
+      <footer className={sheetOpen ? 'dock glass open' : 'dock glass'}>
+        <button
+          type="button"
+          className="sheet-handle"
+          aria-label={sheetOpen ? 'Свернуть панель' : 'Открыть панель'}
+          aria-expanded={sheetOpen}
+          onPointerDown={(event) => { sheetDrag.current = event.clientY; }}
+          onPointerUp={(event) => {
+            const delta = sheetDrag.current - event.clientY;
+            if (delta > 28) setSheetOpen(true);
+            else if (delta < -28) setSheetOpen(false);
+            else setSheetOpen((value) => !value);
+          }}
+        >
+          <span />
+        </button>
         <div className="tool-row">
           {tools.map((item) => (
             <button key={item.id} type="button" className={tool === item.id ? 'tool active' : 'tool'} aria-pressed={tool === item.id} onClick={() => chooseTool(item.id)}>
