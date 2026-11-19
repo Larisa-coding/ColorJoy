@@ -5,7 +5,10 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { fileURLToPath } from 'node:url';
 import { appConfig } from './src/config.ts';
 
+const base = process.env.GITHUB_PAGES === 'true' ? '/ColorJoy/' : '/';
+
 export default defineConfig({
+  base,
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },
@@ -19,8 +22,8 @@ export default defineConfig({
         short_name: appConfig.name,
         description: appConfig.description,
         lang: 'ru',
-        start_url: '/',
-        scope: '/',
+        start_url: base,
+        scope: base,
         display: 'standalone',
         orientation: 'any',
         background_color: '#fff7f2',
@@ -38,7 +41,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff,woff2,webmanifest}'],
-        navigateFallback: '/index.html',
+        navigateFallback: `${base}index.html`,
         cleanupOutdatedCaches: true,
       },
     }),

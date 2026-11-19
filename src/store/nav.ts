@@ -10,19 +10,24 @@ export type Route =
   | { name: 'editor'; pageId: string; drawingId?: string }
   | { name: 'free'; drawingId?: string };
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const withBase = (path: string): string => (base ? `${base}${path === '/' ? '/' : path}` : path);
+
 export const toPath = (route: Route): string => {
-  if (route.name === 'home') return '/';
-  if (route.name === 'collections') return '/collections';
-  if (route.name === 'collection') return `/collections/${route.id}`;
-  if (route.name === 'gallery') return '/gallery';
-  if (route.name === 'favorites') return '/favorites';
-  if (route.name === 'parent') return '/parent';
-  if (route.name === 'free') return route.drawingId ? `/draw/${route.drawingId}` : '/draw';
-  return route.drawingId ? `/editor/${route.pageId}/${route.drawingId}` : `/editor/${route.pageId}`;
+  if (route.name === 'home') return withBase('/');
+  if (route.name === 'collections') return withBase('/collections');
+  if (route.name === 'collection') return withBase(`/collections/${route.id}`);
+  if (route.name === 'gallery') return withBase('/gallery');
+  if (route.name === 'favorites') return withBase('/favorites');
+  if (route.name === 'parent') return withBase('/parent');
+  if (route.name === 'free') return withBase(route.drawingId ? `/draw/${route.drawingId}` : '/draw');
+  return withBase(route.drawingId ? `/editor/${route.pageId}/${route.drawingId}` : `/editor/${route.pageId}`);
 };
 
 export const parsePath = (pathname: string): Route => {
-  const parts = pathname.split('/').filter(Boolean);
+  const stripped = base && (pathname === base || pathname.startsWith(`${base}/`)) ? pathname.slice(base.length) || '/' : pathname;
+  const parts = stripped.split('/').filter(Boolean);
   if (parts[0] === 'collections' && parts[1]) return { name: 'collection', id: decodeURIComponent(parts[1]) };
   if (parts[0] === 'collections') return { name: 'collections' };
   if (parts[0] === 'gallery') return { name: 'gallery' };

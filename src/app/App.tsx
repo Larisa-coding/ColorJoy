@@ -6,7 +6,7 @@ import { Collections, CollectionGallery, Favorites, Gallery } from '@/screens/Br
 import { Editor } from '@/screens/Editor';
 import { Home } from '@/screens/Home';
 import { Parent } from '@/screens/Parent';
-import { useNav } from '@/store/nav';
+import { toPath, useNav } from '@/store/nav';
 import { usePraise } from '@/store/praise';
 import { useSettings } from '@/store/settings';
 
@@ -32,7 +32,9 @@ export const App = () => {
     window.addEventListener('pointerdown', unlock, { once: true });
     initPwa((applyUpdate) => setUpdate(() => applyUpdate));
     const { resume } = useSettings.getState();
-    if (window.location.pathname === '/' && resume) {
+    const home = toPath({ name: 'home' }).replace(/\/$/, '') || '/';
+    const here = window.location.pathname.replace(/\/$/, '') || '/';
+    if (here === home && resume) {
       useNav.getState().go({ name: 'editor', pageId: resume.pageId, drawingId: resume.drawingId }, true);
     }
     return () => reduce.removeEventListener('change', apply);
