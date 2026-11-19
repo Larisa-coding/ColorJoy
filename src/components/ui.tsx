@@ -67,8 +67,8 @@ export const ColoringPreview = ({ pageId }: { pageId: string }) => {
   if (!page) return <div className="preview-skeleton" />;
   return (
     <svg viewBox="0 0 400 400" aria-hidden="true">
-      {page.regions.map((region) => (
-        <path key={region.id} d={region.d} fill="none" stroke="#1b1724" strokeWidth={page.strokeWidth} strokeLinejoin="round" />
+      {page.regions.map((region) => region.id === 'sky' ? null : (
+        <path key={region.id} d={region.d} fill="none" stroke="#1b1724" strokeWidth={page.strokeWidth} strokeLinejoin="round" strokeLinecap="round" />
       ))}
     </svg>
   );
