@@ -1,0 +1,16 @@
+{
+  "framework": null,
+  "installCommand": "echo skip",
+  "buildCommand": "echo skip",
+  "outputDirectory": ".",
+  "rewrites": [
+    { "source": "/ColorJoy/assets/:path*", "destination": "/assets/:path*" },
+    { "source": "/ColorJoy/icons/:path*", "destination": "/icons/:path*" },
+    { "source": "/ColorJoy/favicon.svg", "destination": "/favicon.svg" },
+    { "source": "/ColorJoy/manifest.webmanifest", "destination": "/manifest.webmanifest" },
+    { "source": "/ColorJoy/sw.js", "destination": "/sw.js" },
+    { "source": "/ColorJoy/workbox-:path*", "destination": "/workbox-:path*" },
+    { "source": "/ColorJoy", "destination": "/index.html" },
+    { "source": "/ColorJoy/:path*", "destination": "/index.html" }
+  ]
+}
