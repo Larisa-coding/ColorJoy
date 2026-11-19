@@ -1,0 +1,1 @@
+import{t as e}from"./build-DPwgXXvQ.js";import{l as t}from"./index-D64ie-Fl.js";var n=Object.fromEntries(t(`sports`).map(t=>[t.id,e(t)]));export{n as geometry};
